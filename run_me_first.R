@@ -3,10 +3,6 @@
 #
 # By Luis Paulo, 2017-03-01
 #
-#
-#
-# Prediction:
-#
 # requires:
 install.packages("data.tree", dependencies = TRUE)
 install.packages("TTR", dependencies = TRUE)
@@ -14,7 +10,7 @@ install.packages("TTR", dependencies = TRUE)
 # Effort x Code Smells (Evolution) Correlation Breakdown Algorithm (ECCOBA)
 #
 # it creates a tree to analyse the minimal timespan of correlation 
-# between 
+# between effort and smells datasets
 #
 eccoba <- function(node,
                    effort_data, 
