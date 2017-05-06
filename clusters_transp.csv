@@ -1,0 +1,13 @@
+software_effort_intensity,gc,bc,dc,bm,lm
+gguava_low,34,10,11,31,36
+gguava_mild,6,6,6,6,6
+gguava_high,15,15,15,15,15
+rxjava_low,34,34,34,10,34
+rxjava_mild,5,5,5,5,5
+rxjava_high,1,1,1,1,1
+dbfit_low,21,0,0,0,0
+dbfit_mild,5,0,0,0,0
+dbfit_high,5,0,0,0,0
+junit_low,32,0,0,0,0
+junit_mild,16,0,0,0,0
+junit_high,3,0,0,0,0
