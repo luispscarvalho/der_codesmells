@@ -5,7 +5,7 @@
 #
 #init dependencies
 #loading csv
-data <- read.csv('/misc/workspace/doutorado/temp/springboot.csv', header=TRUE, sep=",")
+data <- read.csv('/springboot.csv', header=TRUE, sep=",")
 #separating efforts (per type) 
 dev_e <- data$enhancement
 bug_e <- data$bug
