@@ -1,6 +1,6 @@
 library(ggplot2)
 #load the data
-clusters <- read.csv("/misc/workspace/doutorado/temp/clusters.csv", sep=",")
+clusters <- read.csv("/clusters.csv", sep=",")
 
 barplot(as.matrix(clusters), 
         ylab = "Instances",
