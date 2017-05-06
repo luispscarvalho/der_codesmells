@@ -4,7 +4,7 @@
 # By Luis Paulo, 2017-02-28
 #
 #loading csv
-data <- read.csv('/misc/workspace/doutorado/temp/junit.csv', header=TRUE, sep=",")
+data <- read.csv('/junit.csv', header=TRUE, sep=",")
 #separating efforts (per type) 
 dev_e <- data$enhancement
 bug_e <- data$bug
