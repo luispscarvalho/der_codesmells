@@ -39,9 +39,11 @@ eccoba <- function(node,
       } else {
         str_node <- "high corr"
       }
+      # formatting node's output
       str_node = sprintf("%s(%f)[%d to %d]", str_node, corr_left, 1, nelen)
     }
     tree_left <- node$AddChild(str_node)
+    # recursive calling to process next left sub-level
     eccoba(tree_left, 
            effort_data_left, 
            smells_chrn_left, 
@@ -59,9 +61,11 @@ eccoba <- function(node,
       } else {
         str_node <- "high corr"
       }
+      # formatting node's output
       str_node = sprintf("%s(%f)[%d to %d]", str_node, corr_rigt, nelen + 1, elen)
     }
     tree_rigt <- node$AddChild(str_node)
+    # recursive calling to process next right sub-level
     eccoba(tree_rigt, 
            effort_data_rigt, 
            smells_chrn_rigt, 
@@ -72,10 +76,9 @@ eccoba <- function(node,
   }
 }
 eccoba.caller <- function(effort_data, smells_churn_data, minimal_timeframe = 10, minimal_correlation = 0.75) {
-  # we need library tree. If you dont have it, please, install it: 
-  # install.packages("data.tree", dependencies = TRUE)
+  # we need library tree
   library('data.tree')
-  # we can only breakdown same-sized effort+churns timespans
+  # we can only breakdown same-sized effort & smells' churns datasets
   elen = length(effort_data)
   slen = length(smells_churn_data)
   if (elen != slen) {
@@ -91,5 +94,5 @@ eccoba.caller <- function(effort_data, smells_churn_data, minimal_timeframe = 10
     print(tree)
   } 
 }
-# uncomment bellow if it is necessary to debug eccoba
+# uncomment bellow to debug eccoba
 #debug(eccoba.caller)
