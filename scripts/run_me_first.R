@@ -9,9 +9,9 @@ install.packages("data.tree", dependencies = TRUE)
 install.packages("TTR", dependencies = TRUE)
 #defines
 #paths
-workspace.path   <- '/misc/workspace/doutorado/workspaces/rlang/der_codesmells'
+workspace.path   <- '/misc/workspace/doutorado/workspaces/research/effortprocessing'
 workspace.dspath <- paste(workspace.path, 'datasets', sep = '/')
-resys.csvpath    <- '/misc/workspace/doutorado/workspaces/refactorings/resys/web/csv/input'
+resys.csvpath    <- '/misc/workspace/doutorado/workspaces/research/resys/web/csv/input'
 #Effort x Code Smells Correlation Breakdown Algorithm (ECCOBA)
 #
 #it creates a tree to analyse the minimal timespan of correlation 
