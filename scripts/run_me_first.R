@@ -11,11 +11,13 @@ install.packages("TTR", dependencies = TRUE)
 #paths
 workspace.path   <- '/misc/workspace/doutorado/workspaces/rlang/der_codesmells'
 workspace.dspath <- paste(workspace.path, 'datasets', sep = '/')
+resys.csvpath    <- '/misc/workspace/doutorado/workspaces/refactorings/resys/web/csv/input'
 #Effort x Code Smells Correlation Breakdown Algorithm (ECCOBA)
 #
 #it creates a tree to analyse the minimal timespan of correlation 
 #between effort and smells datasets
-eccoba <- function(node,
+eccoba <- function(project,
+                   node,
                    data,
                    minimal_timeframe, 
                    minimal_correlation,
@@ -44,8 +46,8 @@ eccoba <- function(node,
       if (corr_left < minimal_correlation) {
         str_node <- "low cor."
       } else {
-        #effort correlates with smells, calls injected listener
-        listener_function(data[1:nelen,])
+        #effort correlates with smells, call injected listener
+        listener_function(project, data[1:nelen,], corr_left)
         str_node <- "high cor."
       }
       #formatting node's output
@@ -53,7 +55,8 @@ eccoba <- function(node,
     }
     tree_left <- node$AddChild(str_node)
     #recursive calling to process next left sub-level
-    eccoba(tree_left, 
+    eccoba(project, 
+           tree_left, 
            data[1:nelen,],
            minimal_timeframe = minimal_timeframe, 
            minimal_correlation = minimal_correlation,  
@@ -68,8 +71,8 @@ eccoba <- function(node,
       if (corr_rigt < minimal_correlation) {
         str_node <- "low cor."
       } else {
-        #effort correlates with smells, calls injected listener
-        listener_function(data[nelen + 1:elen,])
+        #effort correlates with smells, call injected listener
+        listener_function(project, data[nelen + 1:elen,], corr_rigt)
         str_node <- "high cor."
       }
       #formatting node's output
@@ -77,7 +80,8 @@ eccoba <- function(node,
     }
     tree_rigt <- node$AddChild(str_node)
     #recursive calling to process next right sub-level
-    eccoba(tree_rigt, 
+    eccoba(project, 
+           tree_rigt, 
            data[nelen:elen,],
            minimal_timeframe = minimal_timeframe, 
            minimal_correlation = minimal_correlation,
@@ -87,18 +91,18 @@ eccoba <- function(node,
   }
 }
 #preferably, ECCOBA must be activated by the caller
-eccoba.caller <- function(data, minimal_timeframe = 10, minimal_correlation = 0.75,
+eccoba.caller <- function(project, data, minimal_timeframe = 10, minimal_correlation = 0.75,
                           listener_function) {
   #we need library tree
   library('data.tree')
-
   dlen = length(data)
   if (dlen == 0) {
     print('Data is empty!')
   } else {
     tree <- Node$new("ECCOBA")
     #init recursive calling of ECCOBA
-    eccoba(tree, 
+    eccoba(project, 
+           tree, 
            data, 
            minimal_timeframe = minimal_timeframe, 
            minimal_correlation = minimal_correlation, 
@@ -216,17 +220,17 @@ coral.line <- function() {
   return(line)
 }
 #main caller function
-coral.caller <- function(data) {
-  csv = paste(workspace.dspath, 'refactorings.csv', sep = '/')
-  #create a new csv file from template if it does not exist
+coral.caller <- function(project, data, correlation) {
+  csv = paste(project, 'refactorings.csv', sep = '_')
+  csv = paste(workspace.dspath, csv, sep = '/')
+  #create a new csv file if it does not exist
   if (!file.exists(csv)) {
-    print('!file exists..')
     #add header to new file
-    header <- 'date,EM,RTWQ,IPO,PWO,DC,RMWMO,CCE,MM,EF,ECo,HM,EI,ESubC,RDWO,EH,ESupC,MF,PF,PM,RCWP,EC'
+    header <- 'date,corr,EM,RTWQ,IPO,PWO,DC,RMWMO,CCE,MM,EF,ECo,HM,EI,ESubC,RDWO,EH,ESupC,MF,PF,PM,RCWP,EC'
     write(header, file = csv)
   }
   #fill the recommended refactorings in the file
-  #open file for writing
+  #open file for appending
   data_conn <- file(csv, 'a+b')
   for(i in 1:nrow(data)) {
     #reset all recommendations
@@ -246,8 +250,32 @@ coral.caller <- function(data) {
       coral.dc(dc)
       coral.bm(bm)
       coral.lm(lm)
-      #write recommendations into csv file    
-      line <- paste(date, coral.line(), sep = ',')
+      #write recommendations to csv file    
+      line <- paste(date, correlation, coral.line(), sep = ',')
+      write(line, file = csv, append = TRUE)
+    }
+  }
+}
+# exporter funtion for resys recommendations processing
+export.to.resys <- function(project, data, correlation) {
+  csv = paste("eccoba", project, 'corrcommits.csv', sep = '_')
+  csv = paste(resys.csvpath, csv, sep = '/')
+  #create a new csv file if it does not exist
+  if (!file.exists(csv)) {
+    #add header to new file
+    header <- 'date,corr,commits'
+    write(header, file = csv)
+  }
+  #fill the recommended refactorings in the file
+  #open file for appending
+  data_conn <- file(csv, 'a+b')  
+  for(i in 1:nrow(data)) {
+    row <- data[i,]
+    date <- row$date
+    if (!is.na(date)) {
+      commits <- row$commits
+    
+      line <- paste(date, correlation, commits, sep = ',')
       write(line, file = csv, append = TRUE)
     }
   }
