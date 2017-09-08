@@ -12,7 +12,7 @@ library("TTR")
 library("ggplot2")
 library("tidyr")
 #loading csv
-ds.path <- paste(workspace.dspath, 'gguava.csv', sep = '/')
+ds.path <- paste(workspace.dspath, 'guava.csv', sep = '/')
 ds.data <- read.csv(ds.path, header=TRUE, sep=",")
 #separating efforts (per type) 
 dev_e <- ds.data$enhancement
@@ -31,10 +31,11 @@ plot.ts(dev_e_trend)
 smlls_trend <- SMA(smlls)
 plot.ts(smlls_trend)
 #breakdown effort x smell correlation
-eccoba.caller(ds.data, minimal_timeframe = 10, minimal_correlation = 0.7, listener_function = coral.caller)
+#eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.7, listener_function = coral.caller)
+eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.7, listener_function = export.to.resys)
 #plot refactorings recommendation
-refacs.lowc_path <- paste(workspace.dspath, 'gguava_refacts_lowcor.csv', sep = '/')
-refacs.higc_path <- paste(workspace.dspath, 'gguava_refacts_highcor.csv', sep = '/')
+refacs.lowc_path <- paste(workspace.dspath, '/others/gguava_refacts_lowcor.csv', sep = '/')
+refacs.higc_path <- paste(workspace.dspath, '/others/gguava_refacts_highcor.csv', sep = '/')
 refacs.lowc <- read.csv(refacs.lowc_path, header=TRUE)
 refacs.higc <- read.csv(refacs.higc_path, header=TRUE)
 refacs.dflowc <- gather(refacs.lowc, refactoring, qt, EM,RTWQ,IPO,PWO,DC,RMWMO,CCE,MM,EF,ECo,HM,EI,ESubC,RDWO,EH,ESupC,MF,PF,PM,RCWP,EC)
