@@ -30,9 +30,22 @@ dev_e_trend <- SMA(dvb_e)
 plot.ts(dev_e_trend)
 smlls_trend <- SMA(smlls)
 plot.ts(smlls_trend)
+#testing data for normalization
+ds.log_devl <- log(dvb_e + 1)
+ds.log_smls <- log(smlls + 1)
+plot(density(ds.log_devl))
+plot(density(ds.log_smls))
+shapiro.test(ds.log_devl)
+shapiro.test(ds.log_smls)
+## Plot using a qqplot
+qqnorm(ds.log_devl)
+qqline(ds.log_devl, col = 2)
+qqnorm(ds.log_smls)
+qqline(ds.log_smls, col = 2)
+
 #breakdown effort x smell correlation
-eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.7, listener_function = coral.caller)
-eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.7, listener_function = export.to.resys)
+eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.75, listener_function = coral.caller)
+eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.75, listener_function = export.to.resys)
 #plot refactorings recommendation
 refacs.lowc_path <- paste(workspace.dspath, '/others/gguava_refacts_lowcor.csv', sep = '/')
 refacs.higc_path <- paste(workspace.dspath, '/others/gguava_refacts_highcor.csv', sep = '/')

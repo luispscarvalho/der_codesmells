@@ -36,8 +36,8 @@ eccoba <- function(project,
     effort_data_rigt <- effort_data[nelen:elen]
     smells_data_rigt <- smells_data[nelen:elen]
     
-    corr_left <- cor(effort_data_left, smells_data_left)
-    corr_rigt <- cor(effort_data_rigt, smells_data_rigt)
+    corr_left <- cor(log(effort_data_left + 1), log(smells_data_left + 1))
+    corr_rigt <- cor(log(effort_data_rigt + 1), log(smells_data_rigt + 1))
     #add node to the left
     str_node <- ""
     if (is.na(corr_left)) {
