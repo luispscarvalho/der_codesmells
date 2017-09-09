@@ -31,7 +31,7 @@ plot.ts(dev_e_trend)
 smlls_trend <- SMA(smlls)
 plot.ts(smlls_trend)
 #breakdown effort x smell correlation
-#eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.7, listener_function = coral.caller)
+eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.7, listener_function = coral.caller)
 eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.7, listener_function = export.to.resys)
 #plot refactorings recommendation
 refacs.lowc_path <- paste(workspace.dspath, '/others/gguava_refacts_lowcor.csv', sep = '/')
