@@ -31,31 +31,26 @@ plot.ts(dev_e_trend)
 smlls_trend <- SMA(smlls)
 plot.ts(smlls_trend)
 #testing data for normalization
-ds.log_devl <- log(dvb_e + 1)
-ds.log_smls <- log(smlls + 1)
+cor(dvb_e[60:80], smlls[60:80])
+cor.test(dvb_e[60:80], smlls[60:80])
 plot(density(ds.log_devl))
 plot(density(ds.log_smls))
-shapiro.test(ds.log_devl)
-shapiro.test(ds.log_smls)
 ## Plot using a qqplot
 qqnorm(ds.log_devl)
 qqline(ds.log_devl, col = 2)
 qqnorm(ds.log_smls)
 qqline(ds.log_smls, col = 2)
-
 #breakdown effort x smell correlation
 eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.75, listener_function = coral.caller)
 eccoba.caller('guava', ds.data, minimal_timeframe = 10, minimal_correlation = 0.75, listener_function = export.to.resys)
 #plot refactorings recommendation
-refacs.lowc_path <- paste(workspace.dspath, '/others/gguava_refacts_lowcor.csv', sep = '/')
-refacs.higc_path <- paste(workspace.dspath, '/others/gguava_refacts_highcor.csv', sep = '/')
-refacs.lowc <- read.csv(refacs.lowc_path, header=TRUE)
-refacs.higc <- read.csv(refacs.higc_path, header=TRUE)
-refacs.dflowc <- gather(refacs.lowc, refactoring, qt, EM,RTWQ,IPO,PWO,DC,RMWMO,CCE,MM,EF,ECo,HM,EI,ESubC,RDWO,EH,ESupC,MF,PF,PM,RCWP,EC)
-refacs.dfhigc <- gather(refacs.higc, refactoring, qt, EM,RTWQ,IPO,PWO,DC,RMWMO,CCE,MM,EF,ECo,HM,EI,ESubC,RDWO,EH,ESupC,MF,PF,PM,RCWP,EC)
-ggplot(refacs.dflowc, aes(x=as.factor(date), y=qt, fill=refactoring)) + 
+refacs.contextualized_path    <- paste(resys.csvpath, 'output/incidence_guava_contextualized.csv', sep = '/')
+refacs.notcontextualized_path <- paste(resys.csvpath, 'output/incidence_guava.csv', sep = '/')
+refacs.contextualized    <- read.csv(refacs.contextualized_path, header=TRUE)
+refacs.notcontextualized <- read.csv(refacs.notcontextualized_path, header=TRUE)
+ggplot(refacs.contextualized, aes(x=as.factor(date), y=qt, fill=refactoring)) + 
   geom_bar(stat = "identity", width=0.5, position="dodge") +
   scale_fill_brewer(palette="Paired")
-ggplot(refacs.dfhigc, aes(x=as.factor(date), y=qt, fill=refactoring)) + 
+ggplot(refacs.notcontextualized, aes(x=as.factor(date), y=qt, fill=refactoring)) + 
   geom_bar(stat = "identity", width=0.5, position="dodge") +
   scale_fill_brewer(palette="Paired")

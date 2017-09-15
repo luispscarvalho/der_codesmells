@@ -11,7 +11,7 @@ install.packages("TTR", dependencies = TRUE)
 #paths
 workspace.path   <- '/misc/workspace/doutorado/workspaces/research/effortprocessing'
 workspace.dspath <- paste(workspace.path, 'datasets', sep = '/')
-resys.csvpath    <- '/misc/workspace/doutorado/workspaces/research/resys/web/csv/input'
+resys.csvpath    <- '/misc/workspace/doutorado/workspaces/research/resys/web/csv'
 #Effort x Code Smells Correlation Breakdown Algorithm (ECCOBA)
 #
 #it creates a tree to analyse the minimal timespan of correlation 
@@ -36,8 +36,8 @@ eccoba <- function(project,
     effort_data_rigt <- effort_data[nelen:elen]
     smells_data_rigt <- smells_data[nelen:elen]
     
-    corr_left <- cor(log(effort_data_left + 1), log(smells_data_left + 1))
-    corr_rigt <- cor(log(effort_data_rigt + 1), log(smells_data_rigt + 1))
+    corr_left <- cor(effort_data_left, smells_data_left)
+    corr_rigt <- cor(effort_data_rigt, smells_data_rigt)
     #add node to the left
     str_node <- ""
     if (is.na(corr_left)) {
@@ -259,7 +259,7 @@ coral.caller <- function(project, data, correlation) {
 # exporter funtion for resys recommendations processing
 export.to.resys <- function(project, data, correlation) {
   csv = paste("eccoba", project, 'corrcommits.csv', sep = '_')
-  csv = paste(resys.csvpath, csv, sep = '/')
+  csv = paste(resys.csvpath, 'input', csv, sep = '/')
   #create a new csv file if it does not exist
   if (!file.exists(csv)) {
     #add header to new file
